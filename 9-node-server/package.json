@@ -1,0 +1,14 @@
+{
+  "name": "9-node-server",
+  "version": "1.0.0",
+  "description": "practice making node-server",
+  "main": "1-http.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "BellaJin",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9"
+  }
+}
