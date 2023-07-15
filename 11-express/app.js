@@ -7,26 +7,20 @@ const app = express();
 
 app.use(express.json());
 
-app.get("/file", (req, res) => {});
-
-app.get("/file1", (req, res) => {
-  try {
-    const data = fs.readFileSync("/file1.txt");
-    res.send(data);
-  } catch (error) {
-    res.sendStatus(404);
-  }
+app.get("/posts", (req, res) => {
+  res.status(201).send("GET: /posts");
 });
 
-app.get("/file2", async (req, res) => {
-  return fsAsync.readFile("/file2.txt").then((data) => {
-    res.send(data);
-  });
+app.post("/posts", (req, res) => {
+  res.status(201).send("POST: /posts");
 });
 
-app.get("/file3", async function (req, res) {
-  const data = await fsAsync.readFile("/file2.txt");
-  res.send(data);
+app.put("/posts/:id", () => {
+  res.status(201).send("PUT: /posts/:id");
+});
+
+app.delete("/posts/:id", () => {
+  res.status(201).send("DELETE: /posts/:id");
 });
 
 app.use((error) => {
