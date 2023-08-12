@@ -12,8 +12,8 @@ const videoDirPath = targetDirPath + "/video";
 const capturedDirPath = targetDirPath + "/captured";
 const duplicatedDirPath = targetDirPath + "/duplicated";
 
-console.log(parsed);
-console.log(parsed.dir);
+// console.log(parsed);
+// console.log(parsed.dir);
 
 fs.readdir(targetDir, { withFileTypes: true })
   .then((element) => doCheckFileExt(element))
@@ -22,32 +22,36 @@ fs.readdir(targetDir, { withFileTypes: true })
 // 어떤 파일인지 체크하기
 const doCheckFileExt = (element) => {
   element.forEach((file) => {
-    const extname = path.extname(file.name);
+    const extName = path.extname(file.name);
+    const imgFileName = path.parse(file.name);
     // 동영상 파일인지 체크
-    if (extname === ".mp4" || extname === ".mov") {
+    if (extName === ".mp4" || extName === ".mov") {
       isDirExist(videoDirPath);
       doMoveFile(videoDirPath, file);
     }
     // 스크린샷 or iphone에서 편집된 사진 파일인지 체크
-    else if (extname === ".png" || extname === ".aae") {
+    else if (extName === ".png" || extName === ".aae") {
       isDirExist(capturedDirPath);
       doMoveFile(capturedDirPath, file);
     }
 
     // iphone에서 사진 보정 시 생기는 파일인지 체크
+    else if (imgFileName.base.includes("IMG_E")) {
+      console.log(imgFileName);
+    }
   });
 };
 
 // 해당 폴더 있는지 체크하기
 const isDirExist = (dirPath) => {
   if (!fsSync.existsSync(dirPath)) {
-    fs.mkdir(dirPath).catch(console.error);
+    fsSync.mkdirSync(dirPath).catch(console.error);
   }
 };
 
 // 해당 폴더로 옮기기
 const doMoveFile = (dirPath, file) => {
-  fs.rename(
+  fsSync.renameSync(
     targetDirPath + path.sep + file.name,
     dirPath + path.sep + file.name
   );
