@@ -2,8 +2,8 @@ const path = require("path");
 const fs = require("fs").promises;
 const fsSync = require("fs");
 
-// const targetDir = process.argv[2]; // 정리할 폴더 이름, 실행 시 받는 첫 번째 인자
-const targetDir = "test";
+const targetDir = process.argv[2]; // 정리할 폴더 이름, 실행 시 받는 첫 번째 인자
+// const targetDir = "test";
 
 const parsed = path.parse(__filename); // 전체 경로 분리 가능
 const currentDirPath = parsed.dir; // 현재 디렉토리 경로
