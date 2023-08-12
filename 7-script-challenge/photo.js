@@ -2,44 +2,54 @@ const path = require("path");
 const fs = require("fs").promises;
 const fsSync = require("fs");
 
-// const targetDir = process.argv[2]; // 정리할 폴더 이름, 실행 시 받는 첫 번째 인자
-const targetDir = "test";
+const targetDir = process.argv[2]; // 정리할 폴더 이름, 실행 시 받는 첫 번째 인자
+// const targetDir = "test";
 
 const parsed = path.parse(__filename); // 전체 경로 분리 가능
 const currentDirPath = parsed.dir; // 현재 디렉토리 경로
 const targetDirPath = path.join(currentDirPath, targetDir); // 정리할 폴더의 경로
 const videoDirPath = targetDirPath + "/video";
+const capturedDirPath = targetDirPath + "/captured";
+const duplicatedDirPath = targetDirPath + "/duplicated";
 
 console.log(parsed);
 console.log(parsed.dir);
 
 fs.readdir(targetDir, { withFileTypes: true })
-  .then((element) => isVideoFiles(element))
+  .then((element) => doCheckFileExt(element))
   .catch(console.error);
 
-// 동영상 파일인지 체크하기
-const isVideoFiles = (element) => {
+// 어떤 파일인지 체크하기
+const doCheckFileExt = (element) => {
   element.forEach((file) => {
     const extname = path.extname(file.name);
+    // 동영상 파일인지 체크
     if (extname === ".mp4" || extname === ".mov") {
-      isVideoDir();
-      doMoveVideoFile(file);
+      isDirExist(videoDirPath);
+      doMoveFile(videoDirPath, file);
     }
+    // 스크린샷 or iphone에서 편집된 사진 파일인지 체크
+    else if (extname === ".png" || extname === ".aae") {
+      isDirExist(capturedDirPath);
+      doMoveFile(capturedDirPath, file);
+    }
+
+    // iphone에서 사진 보정 시 생기는 파일인지 체크
   });
 };
 
-// 동영상 폴더 있는지 체크하기
-const isVideoDir = () => {
-  if (!fsSync.existsSync(videoDirPath)) {
-    fs.mkdir(videoDirPath).catch(console.error);
+// 해당 폴더 있는지 체크하기
+const isDirExist = (dirPath) => {
+  if (!fsSync.existsSync(dirPath)) {
+    fs.mkdir(dirPath).catch(console.error);
   }
 };
 
-// 동영상 폴더로 옮기기
-const doMoveVideoFile = (file) => {
+// 해당 폴더로 옮기기
+const doMoveFile = (dirPath, file) => {
   console.log(file);
   fs.rename(
     targetDirPath + path.sep + file.name,
-    videoDirPath + path.sep + file.name
+    dirPath + path.sep + file.name
   );
 };
