@@ -23,6 +23,7 @@ const isVideoFiles = (element) => {
     const extname = path.extname(file.name);
     if (extname === ".mp4" || extname === ".mov") {
       isVideoDir();
+      doMoveVideoFile(file);
     }
   });
 };
@@ -31,6 +32,14 @@ const isVideoFiles = (element) => {
 const isVideoDir = () => {
   if (!fsSync.existsSync(videoDirPath)) {
     fs.mkdir(videoDirPath).catch(console.error);
-    console.log("머임..");
   }
+};
+
+// 동영상 폴더로 옮기기
+const doMoveVideoFile = (file) => {
+  console.log(file);
+  fs.rename(
+    targetDirPath + path.sep + file.name,
+    videoDirPath + path.sep + file.name
+  );
 };
