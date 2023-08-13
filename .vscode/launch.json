@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/7-script-challenge/photo.js",
+      "program": "${workspaceFolder}/7-script-challenge/app.js",
       "args": ["test"],
       "restart": true,
       "runtimeExecutable": "node"
